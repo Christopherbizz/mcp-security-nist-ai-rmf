@@ -1,0 +1,3 @@
+# mcp_audit.py itself has zero runtime dependencies (Python 3.9+ standard
+# library only). pytest is only needed to run the test suite in tests/.
+pytest>=8.0.0

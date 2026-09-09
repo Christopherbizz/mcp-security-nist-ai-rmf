@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@1.2.0", "/home/user/projects"],
+      "env": {
+        "LOG_LEVEL": "info"
+      },
+      "_source": "https://github.com/modelcontextprotocol/servers",
+      "_publisher": "Anthropic",
+      "_approved_by": "security-team",
+      "_approved_date": "2026-06-01"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+name: Test and Self-Audit
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: pip install -r tool/requirements.txt
+
+      - name: Run pytest
+        run: python -m pytest tool/tests/ -v
+
+  self-audit:
+    name: Run mcp_audit.py against its own example fixtures
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Known-good example must pass cleanly
+        run: |
+          python tool/mcp_audit.py \
+            --config examples/good-server-config.json \
+            --manifest examples/tool-manifest-good.json
+
+      - name: Known-risky example must be flagged (this step is expected to fail the tool, not the job)
+        run: |
+          if python tool/mcp_audit.py \
+              --config examples/risky-server-config.json \
+              --manifest examples/tool-manifest-risky.json; then
+            echo "ERROR: the audit tool passed a config it should have flagged." >&2
+            exit 1
+          else
+            echo "OK: the audit tool correctly flagged the risky example."
+          fi

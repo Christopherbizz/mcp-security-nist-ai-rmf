@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Never commit real MCP configs — only the sanitized examples/ fixtures
+# belong in version control.
+mcp_config.local.json
+claude_desktop_config.json
+
+.DS_Store
+.vscode/
